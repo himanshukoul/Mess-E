@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mess E</title>
+    <link rel="stylesheet" href="meal.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@300;700&family=Cardo:ital,wght@0,400;0,700;1,400&family=Platypi:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="upper-container">
+        <a href="index.html" class="logo-home">
+          <img src="home.png" />
+        </a>
+        <h1>Mess-E</h1>
+        <a href="https://github.com/himanshukoul" class="logo-github">
+          <img src="github.png" />
+        </a>
+      </div>
+      <nav>
+        <button class="daybtn" value="Monday">Mon</button>
+        <button class="daybtn" value="Tuesday">Tue</button>
+        <button class="daybtn" value="Wednesday">Wed</button>
+        <button class="daybtn" value="Thursday">Thu</button>
+        <button class="daybtn" value="Friday">Fri</button>
+        <button class="daybtn" value="Saturday">Sat</button>
+        <button class="daybtn" value="Sunday">Sun</button>
+      </nav>
+    </header>
+
+    <main>
+      <div class="overall-container">
+        <div class="meal-container">
+          <div class="meal-item">
+            <h2>Breakfast</h2>
+            <p id="breakfast"></p>
+            <div class="meal-time">
+              <img src="timelogo2.jpg" class="time-logo" />
+              <p>7:00 AM - 9:00 AM</p>
+            </div>
+          </div>
+          <div class="meal-item">
+            <h2>Lunch</h2>
+            <p id="lunch"></p>
+            <div class="meal-time">
+              <img src="timelogo2.jpg" class="time-logo" />
+              <p>12:30 PM - 2:30 PM</p>
+            </div>
+          </div>
+          <div class="meal-item">
+            <h2>Snack</h2>
+            <p id="snack"></p>
+            <div class="meal-time">
+              <img src="timelogo2.jpg" class="time-logo" />
+              <p>4:00 PM - 6:00 PM</p>
+            </div>
+          </div>
+          <div class="meal-item">
+            <h2>Dinner</h2>
+            <p id="dinner"></p>
+            <div class="meal-time">
+              <img src="timelogo2.jpg" class="time-logo" />
+              <p>7:00 PM - 9:00 PM</p>
+            </div>
+          </div>
+        </div>
+        <div class="calorie-calculator">
+          <h2>Nutrition Calculator</h2>
+
+          <label for="dish">Type Multiple Dishes with Quantity</label>
+          <input
+            type="text"
+            placeholder="30gm fries and 60gm idli"
+            id="dishes"
+          />
+
+          <button type="button" id="calcCalbtn">Calculate</button>
+          <div id="calorieResult"></div>
+        </div>
+      </div>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="meal.js"></script>
+  </body>
+</html>

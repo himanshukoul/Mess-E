@@ -1,0 +1,214 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Platypi", serif;
+  background-color: #f1f1f1;
+}
+
+header {
+  background-color: #910000;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+.upper-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-home img {
+  display: block;
+  width: 50px;
+  height: auto;
+}
+.logo-github img {
+  width: 50px;
+  height: auto;
+  border-radius: 50%;
+}
+
+nav {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.daybtn {
+  background-color: #ffffff;
+  font-family: "Platypi", serif;
+  border: solid 2px rgb(0, 0, 0);
+  border-radius: 10px;
+  color: rgb(0, 0, 0);
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.daybtn:hover {
+  color: #3c0606;
+  box-shadow: 0 0 5px #3c0606;
+  text-shadow: 0 0 5px #3c0606;
+}
+.daybtn.active {
+  background-color: #9f8d00;
+}
+
+.overall-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+.meal-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+.calorie-calculator {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.calorie-calculator h2 {
+  margin-bottom: 10px;
+  color: #910000;
+}
+.calorie-calculator label {
+  margin-bottom: 10px;
+}
+.calorie-calculator input,
+button {
+  width: fit-content;
+  height: fit-content;
+  margin: auto auto 10px auto;
+  background-color: #ffffff;
+  font-family: "Platypi", serif;
+  border: solid 2px rgb(0, 0, 0);
+  border-radius: 10px;
+  color: rgb(0, 0, 0);
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+}
+.calorie-calculator button {
+  cursor: pointer;
+}
+.calorie-calculator button:hover {
+  color: #cd0000;
+  box-shadow: 0 0 5px #cd0000;
+  text-shadow: 0 0 5px #cd0000;
+}
+.calorieResult {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+.dish-info {
+  position: relative;
+  background-color: #bcbcbc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.meal-item {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.meal-item h2 {
+  margin-bottom: 10px;
+  color: #910000;
+}
+
+.meal-item p {
+  font-size: 16px;
+}
+.meal-time {
+  display: flex;
+  margin-top: auto;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+  border-radius: 0 0 5px 5px;
+  font-size: 12px;
+  color: #333;
+}
+.time-logo {
+  width: 20px;
+  height: 20px;
+  margin-left: 4px;
+  margin-right: 8px;
+}
+
+@media (max-width: 767px) {
+  header {
+    padding: 8px;
+  }
+
+  .daybtn {
+    font-size: 12px;
+    padding: 8px 7px;
+    margin: 4px 1px;
+  }
+
+  .meal-container {
+    padding: 10px;
+  }
+
+  .meal-item {
+    margin: 5px;
+    padding: 15px;
+  }
+
+  .meal-item h2 {
+    font-size: 18px;
+  }
+
+  .meal-item p {
+    font-size: 14px;
+  }
+}
+
+.logo-home {
+  display: block;
+  width: 50px;
+  height: auto;
+  margin-right: 20px;
+}
+
+.logo-home img {
+  width: 100%;
+  height: auto;
+}
