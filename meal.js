@@ -138,7 +138,7 @@ function displayCals(query) {
   $.ajax({
     method: "GET",
     url: "https://api.api-ninjas.com/v1/nutrition?query=" + query.value,
-    headers: { "X-Api-Key": "VxG72FjYQzLwTtPqNHfJAA==7roujWV7g90o3P" },
+    headers: { "X-Api-Key": "VxG72FjYQzLwTtPqNHfJAA==7roujWV7g90o3Pyy" },
     contentType: "application/json",
     success: function (result) {
       console.log(result);
