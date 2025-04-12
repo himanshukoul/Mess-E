@@ -60,6 +60,7 @@ const vegMess = {
       "Phulka, Dhal Thoor, White Rice Rasam, Sambar, Butter Milk, Lemon Rice Aloo Capsicum Muttar Masala Seasonal Fruits",
   },
 };
+
 const nonVegMess = {
   Monday: {
     breakfast:
@@ -89,7 +90,7 @@ const nonVegMess = {
   },
   Thursday: {
     breakfast:
-      "Gobi Paratha, Curd, Pongal, Chutney B,B,J Tea, Coffee, Milk, Sambar Scrambeled Egg",
+      "Gobi Paratha, Curd, Pongal, Chutney B,B,J Tea, Coffee, Milk, Scrambeled Egg",
     lunch:
       "Phulka, Dal Madka, White Rice, Sambar Rasam, Curd, Papad Aloo Palak, Avaraikai Poriyal",
     snack: "Raw Banana Bajji Tea, Coffee, Milk",
@@ -123,10 +124,12 @@ const nonVegMess = {
       "Phulka, Dhal, White Rice Rasam, Sambar, Butter Milk Aloo Gobi Capsicum Masala, Fruit Salad",
   },
 };
+
 const messTypesData = {
   nonVegMess: nonVegMess,
   vegMess: vegMess,
 };
+
 const dayButtons = document.querySelectorAll(".daybtn");
 const mealContainers = {
   breakfast: document.getElementById("breakfast"),
@@ -134,6 +137,7 @@ const mealContainers = {
   snack: document.getElementById("snack"),
   dinner: document.getElementById("dinner"),
 };
+
 function displayCals(query) {
   $.ajax({
     method: "GET",
@@ -175,9 +179,13 @@ function displayCals(query) {
     },
     error: function ajaxError(jqXHR) {
       console.error("Error: ", jqXHR.responseText);
+      const resDiv = document.getElementById("calorieResult");
+      resDiv.innerHTML =
+        "<p>Error fetching calorie data. Please try again.</p>";
     },
   });
 }
+
 function displayMeals(day, messType) {
   dayButtons.forEach((btn) => btn.classList.remove("active"));
 
@@ -197,6 +205,7 @@ dayButtons.forEach((btn) => {
     displayMeals(day, selctedMess);
   });
 });
+
 const curdate = new Date();
 const curdayindx = curdate.getDay();
 const dayNames = [
@@ -211,10 +220,122 @@ const dayNames = [
 const curday = dayNames[curdayindx];
 const selctedMess = localStorage.getItem("messType");
 displayMeals(curday, selctedMess);
+
 var query = document.getElementById("dishes");
 const calbtn = document.getElementById("calcCalbtn");
 calbtn.addEventListener("click", () => {
-  if (!(query.value == "")) {
+  if (query.value) {
     displayCals(query);
+  }
+});
+
+// Chatbot UI elements
+const chatbotIcon = document.getElementById("chatbot-icon");
+const chatbotWindow = document.getElementById("chatbot-window");
+const closeChatbot = document.getElementById("close-chatbot");
+const chatbotMessages = document.getElementById("chatbot-messages");
+const chatbotInput = document.getElementById("chatbot-input");
+const sendChatbot = document.getElementById("send-chatbot");
+
+// Toggle chatbot window
+chatbotIcon.addEventListener("click", () => {
+  chatbotWindow.style.display =
+    chatbotWindow.style.display === "flex" ? "none" : "flex";
+});
+
+closeChatbot.addEventListener("click", () => {
+  chatbotWindow.style.display = "none";
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  addMessage(
+    "Hello! I'm your nutrition assistant. Ask me anything about diet, nutrition"
+  );
+});
+
+function addMessage(content, isUser = false) {
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", isUser ? "user" : "bot");
+  messageDiv.textContent = content;
+  chatbotMessages.appendChild(messageDiv);
+  chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Autoscroll to bottom
+}
+
+function showLoading() {
+  const loadingDiv = document.createElement("div");
+  loadingDiv.classList.add("message", "bot", "loading");
+  loadingDiv.textContent = "Thinking...";
+  loadingDiv.id = "loading-message";
+  chatbotMessages.appendChild(loadingDiv);
+  chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+// Remove loading indicator
+function hideLoading() {
+  const loadingDiv = document.getElementById("loading-message");
+  if (loadingDiv) {
+    loadingDiv.remove();
+  }
+}
+
+// Query
+async function getChatbotResponse(query) {
+  try {
+    showLoading();
+
+    //ngrok URL including /chatbot endpoint
+    const response = await fetch(
+      "https://a881-34-126-158-9.ngrok-free.app/chatbot",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: query }),
+      }
+    );
+
+    hideLoading();
+
+    if (!response.ok) {
+      throw new Error(
+        `HTTP error! Status: ${
+          response.status
+        }, Message: ${await response.text()}`
+      );
+    }
+
+    const data = await response.json();
+    if (data.error) {
+      throw new Error(data.error);
+    }
+    return data.response || "Sorry, I couldn't process that request.";
+  } catch (error) {
+    hideLoading();
+    console.error("Error fetching response:", error);
+    return `Error: ${error.message}. Please check if the chatbot server is running or try again later.`;
+  }
+}
+
+// Send message handler
+sendChatbot.addEventListener("click", async () => {
+  const query = chatbotInput.value.trim();
+  if (query) {
+    addMessage(query, true);
+    chatbotInput.value = "";
+
+    chatbotInput.disabled = true;
+    sendChatbot.disabled = true;
+
+    const response = await getChatbotResponse(query); // Fetch response
+    addMessage(response);
+
+    chatbotInput.disabled = false;
+    sendChatbot.disabled = false;
+    chatbotInput.focus();
+  }
+});
+
+chatbotInput.addEventListener("keypress", async (e) => {
+  if (e.key === "Enter") {
+    sendChatbot.click();
   }
 });
