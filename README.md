@@ -4,8 +4,8 @@ A nutrition assistant chatbot with a static website displaying mess menus and ca
 
 ## Setup
 
-1. For the website, open `web/index.html` or deploy to GitHub Pages.
-2. For the chatbot backend, run `notebooks/DeployingChatBot.ipynb` on collab.
+1. For the website, open `index.html` or deploy to GitHub Pages.
+2. For the chatbot backend, run `DeployingChatBot.ipynb` on collab.
 
 ## Notes
 
