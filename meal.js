@@ -142,7 +142,7 @@ function displayCals(query) {
   $.ajax({
     method: "GET",
     url: "https://api.api-ninjas.com/v1/nutrition?query=" + query.value,
-    headers: { "X-Api-Key": "VxG72FjYQzLwTtPqNHfJAA==7roujWV7g90o3Pyy" },
+    headers: { "X-Api-Key": " Api Key eg. VxG72FjYQzLwTtPqNA==7roujWV" },
     contentType: "application/json",
     success: function (result) {
       console.log(result);
@@ -283,9 +283,9 @@ async function getChatbotResponse(query) {
   try {
     showLoading();
 
-    //ngrok URL including /chatbot endpoint
+    //ngrok URL including /chatbot endpoint (change after deployed)
     const response = await fetch(
-      "https://a881-34-126-158-9.ngrok-free.app/chatbot",
+      "https://35c1-34-90-30-194.ngrok-free.app/chatbot",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
