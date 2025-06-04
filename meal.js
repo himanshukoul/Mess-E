@@ -138,52 +138,55 @@ const mealContainers = {
   dinner: document.getElementById("dinner"),
 };
 
-function displayCals(query) {
-  $.ajax({
-    method: "GET",
-    url: "https://api.api-ninjas.com/v1/nutrition?query=" + query.value,
-    headers: { "X-Api-Key": " Api Key eg. VxG72FjYQzLwTtPqNA==7roujWV" },
-    contentType: "application/json",
-    success: function (result) {
-      console.log(result);
-      const resDiv = document.getElementById("calorieResult");
-      resDiv.innerHTML = "";
-      var total_calories = 0,
-        total_fat_total_g = 0,
-        total_protein_g = 0,
-        total_carbohydrates_total_g = 0;
-      result.forEach((dish) => {
-        var dishDiv = document.createElement("div");
-        dishDiv.classList.add("dish-info");
-        dishDiv.innerHTML = `<h3>${dish.name} </h3>
-          <p>Calories: ${dish.calories}</p>
-          <p>Fat: ${dish.fat_total_g} g</p>
-          <p>Protein: ${dish.protein_g} g</p>
-          <p>Carbohydrates: ${dish.carbohydrates_total_g} g</p>`;
-        resDiv.appendChild(dishDiv);
-        total_calories += dish.calories;
-        total_fat_total_g += dish.fat_total_g;
-        total_protein_g += dish.protein_g;
-        total_carbohydrates_total_g += dish.carbohydrates_total_g;
-      });
-      var dishDiv = document.createElement("div");
+async function displayCals(query) {
+  const resDiv = document.getElementById("calorieResult");
+  resDiv.innerHTML = "";
+  try {
+    const response = await axios.get(
+      "https://api.api-ninjas.com/v1/nutrition",
+      {
+        params: { query: query.value },
+        headers: { "X-Api-Key": "VxG72FjYQzLwTtPqNHfJAA==7roujWV7g90o3Pyy" },
+      }
+    );
+    console.log(response);
+    const result = response.data;
+    console.log(result);
+    let total_cholesterol_mg = 0,
+      total_fat_total_g = 0,
+      total_carbohydrates_total_g = 0,
+      total_sugar_g = 0;
+
+    result.forEach((dish) => {
+      const dishDiv = document.createElement("div");
       dishDiv.classList.add("dish-info");
-      dishDiv.innerHTML = `<p><b>Total calories:</b> ${total_calories.toFixed(
-        2
-      )} </p>
-      <p><b>Total fats:</b> ${total_fat_total_g.toFixed(2)} </p>
-      <p><b>Total protein:</b> ${total_protein_g.toFixed(2)} </p>
-      <p><b>Total carbs:</b> ${total_carbohydrates_total_g.toFixed(2)} </p>`;
+      dishDiv.innerHTML = `<h3>${dish.name}</h3>
+        <p>Cholesterol: ${dish.cholesterol_mg} mg</p>
+        <p>Fat: ${dish.fat_total_g} g</p>
+        <p>Carbohydrates: ${dish.carbohydrates_total_g} g</p>
+        <p>Sugar: ${dish.sugar_g} g</p>`;
       resDiv.appendChild(dishDiv);
-      query.value = "";
-    },
-    error: function ajaxError(jqXHR) {
-      console.error("Error: ", jqXHR.responseText);
-      const resDiv = document.getElementById("calorieResult");
-      resDiv.innerHTML =
-        "<p>Error fetching calorie data. Please try again.</p>";
-    },
-  });
+      total_cholesterol_mg += dish.cholesterol_mg;
+      total_fat_total_g += dish.fat_total_g;
+      total_carbohydrates_total_g += dish.carbohydrates_total_g;
+      total_sugar_g += dish.sugar_g;
+    });
+
+    const totalDiv = document.createElement("div");
+    totalDiv.classList.add("dish-info");
+    totalDiv.innerHTML = `<p><b>Total Cholestrol:</b> ${total_cholesterol_mg.toFixed(
+      2
+    )}</p>
+      <p><b>Total fats:</b> ${total_fat_total_g.toFixed(2)}</p>
+      <p><b>Total carbs:</b> ${total_carbohydrates_total_g.toFixed(2)}</p>
+      <p><b>Total sugar:</b> ${total_sugar_g.toFixed(2)}</p>`;
+    resDiv.appendChild(totalDiv);
+
+    query.value = "";
+  } catch (error) {
+    console.error("Error: ", error);
+    resDiv.innerHTML = "<p>Error fetching calorie data. Please try again.</p>";
+  }
 }
 
 function displayMeals(day, messType) {
@@ -229,7 +232,7 @@ calbtn.addEventListener("click", () => {
   }
 });
 
-// Chatbot UI elements
+// Chatbot
 const chatbotIcon = document.getElementById("chatbot-icon");
 const chatbotWindow = document.getElementById("chatbot-window");
 const closeChatbot = document.getElementById("close-chatbot");
@@ -249,7 +252,7 @@ closeChatbot.addEventListener("click", () => {
 
 window.addEventListener("DOMContentLoaded", () => {
   addMessage(
-    "Hello! I'm your nutrition assistant. Ask me anything about diet, nutrition"
+    "Hello! I'm your nutrition assistant. Ask me anything about diet & nutrition"
   );
 });
 
@@ -270,7 +273,6 @@ function showLoading() {
   chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
 }
 
-// Remove loading indicator
 function hideLoading() {
   const loadingDiv = document.getElementById("loading-message");
   if (loadingDiv) {
@@ -283,35 +285,27 @@ async function getChatbotResponse(query) {
   try {
     showLoading();
 
-    //ngrok URL including /chatbot endpoint (change after deployed)
-    const response = await fetch(
-      "https://35c1-34-90-30-194.ngrok-free.app/chatbot",
+    //ngrok URL including /chatbot endpoint
+    const response = await axios.post(
+      "https://800b-34-125-59-47.ngrok-free.app/chatbot",
+      { query: query },
       {
-        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: query }),
+        timeout: 60000,
       }
     );
 
     hideLoading();
 
-    if (!response.ok) {
-      throw new Error(
-        `HTTP error! Status: ${
-          response.status
-        }, Message: ${await response.text()}`
-      );
+    if (response.data.error) {
+      throw new Error(response.data.error);
     }
 
-    const data = await response.json();
-    if (data.error) {
-      throw new Error(data.error);
-    }
-    return data.response || "Sorry, I couldn't process that request.";
+    return response.data.response;
   } catch (error) {
     hideLoading();
     console.error("Error fetching response:", error);
-    return `Error: ${error.message}. Please check if the chatbot server is running or try again later.`;
+    return `Error: ${error.message}. Please check if chatbot server is running.`;
   }
 }
 
